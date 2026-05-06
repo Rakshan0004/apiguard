@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: usage-service
+  datasource:
+    url: jdbc:postgresql://localhost:5435/apiguard
+    username: apiguard
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: false # Disabled for now until you have migrations
+
+server:
+  port: 8082
