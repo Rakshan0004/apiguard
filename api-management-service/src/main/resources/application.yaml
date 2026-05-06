@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: api-management-service
+  datasource:
+    url: jdbc:postgresql://localhost:5435/apiguard
+    username: apiguard
+    password: secret
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8081

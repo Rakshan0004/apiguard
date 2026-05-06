@@ -1,37 +1,55 @@
-HELP.md
+# Java / Gradle
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Compiled class file
+*.class
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# Log files
+*.log
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Virtual endpoints
+.idea/
 *.iml
+*.iws
 *.ipr
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
 .vscode/
+.settings/
+.classpath
+.project
+.factorypath
+bin/
+
+# Environment / Secrets
+.env
+.env.local
+.env.*.local
+*.secret
+*.key
+
+# Docker
+.docker/
+
+# Python (for jira script)
+__pycache__/
+*.py[cod]
+*$py.class
+.venv
+venv/
+ENV/
+env/
+.python-version
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Misc
+HELP.md
