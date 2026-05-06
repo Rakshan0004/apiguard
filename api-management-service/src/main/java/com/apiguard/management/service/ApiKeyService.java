@@ -22,9 +22,13 @@ public class ApiKeyService {
     private final PlanRepository planRepository;
 
     @Transactional
-    public String createApiKey(UUID apiId, String planName) {
+    public String createApiKey(UUID apiId, String planName, String ownerEmail) {
         RegisteredApi api = apiRepository.findById(apiId)
                 .orElseThrow(() -> new IllegalArgumentException("API not found: " + apiId));
+
+        if (!api.getOwnerEmail().equals(ownerEmail)) {
+            throw new IllegalArgumentException("You do not own this API");
+        }
 
         Plan plan = planRepository.findByName(planName)
                 .orElseThrow(() -> new IllegalArgumentException("Plan not found: " + planName));

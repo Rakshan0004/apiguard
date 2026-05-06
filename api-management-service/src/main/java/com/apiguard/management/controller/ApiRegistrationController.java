@@ -6,6 +6,7 @@ import com.apiguard.management.service.ApiRegistrationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +19,14 @@ public class ApiRegistrationController {
     private final ApiRegistrationService service;
 
     @PostMapping
-    public ResponseEntity<RegisteredApi> registerApi(@Valid @RequestBody ApiRegistrationRequest request) {
-        // In a real app, email would come from SecurityContext
-        String ownerEmail = "demo@example.com"; 
+    public ResponseEntity<RegisteredApi> registerApi(@Valid @RequestBody ApiRegistrationRequest request, Authentication authentication) {
+        String ownerEmail = authentication.getName(); 
         return ResponseEntity.ok(service.registerApi(ownerEmail, request));
     }
 
     @GetMapping
-    public ResponseEntity<List<RegisteredApi>> listApis() {
-        String ownerEmail = "demo@example.com";
+    public ResponseEntity<List<RegisteredApi>> listApis(Authentication authentication) {
+        String ownerEmail = authentication.getName();
         return ResponseEntity.ok(service.getUserApis(ownerEmail));
     }
 }
