@@ -6,7 +6,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
 
 ## Phase 1: Foundation & Core Management
 
-### Sprint 1: Project Scaffolding & Infrastructure [DONE]
+### ✅ Sprint 1: Project Scaffolding & Infrastructure [DONE]
 *   **Objective**: Establish the multi-module project structure and local development environment.
 *   **Tasks**:
     *   Set up Gradle Multi-Project build (`common`, `gateway`, `management`, `usage`).
@@ -15,7 +15,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
     *   Create the `common` module for shared DTOs and RabbitMQ constants.
 *   **Deliverable**: A buildable project skeleton with all infrastructure running in Docker.
 
-### Sprint 2: API Management - Core Registry [DONE]
+### ✅ Sprint 2: API Management - Core Registry [DONE]
 *   **Objective**: Enable users to register their backend APIs.
 *   **Tasks**:
     *   Implement `RegisteredApi` entity and PostgreSQL schema.
@@ -23,7 +23,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
     *   Implement logic to generate unique `proxyPath` slugs.
 *   **Deliverable**: REST API to register and list backend services.
 
-### Sprint 3: API Key & Plan System [DONE]
+### ✅ Sprint 3: API Key & Plan System [DONE]
 *   **Objective**: Secure the registered APIs with hashed API keys and global plans (FREE, BASIC, PRO).
 *   **Tasks**:
     *   Implement `ApiKey` and `Plan` entities.
@@ -35,7 +35,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
 
 ## Phase 2: Authentication, Multi-Tenant & Gateway
 
-### Sprint 4: JWT Authentication for API Owners
+### ✅ Sprint 4: JWT Authentication for API Owners [DONE]
 *   **Objective**: Build a registration/login system so API Owners can authenticate and manage their resources programmatically via JWT.
 *   **Tasks**:
     *   Create `Owner` entity (email, hashed password) and Flyway migration.
