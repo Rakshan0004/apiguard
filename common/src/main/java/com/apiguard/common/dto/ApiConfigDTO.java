@@ -1,7 +1,6 @@
 package com.apiguard.common.dto;
 
 import lombok.Builder;
-import java.util.List;
 
 @Builder
 public record ApiConfigDTO(

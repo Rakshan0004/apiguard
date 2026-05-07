@@ -2,7 +2,7 @@ spring:
   application:
     name: usage-service
   datasource:
-    url: jdbc:postgresql://localhost:5435/apiguard
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5435}/apiguard
     username: apiguard
     password: secret
   jpa:
