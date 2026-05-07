@@ -32,7 +32,6 @@ public class ApiRegistrationService {
     }
 
     public List<RegisteredApi> getUserApis(String ownerEmail) {
-        // For simplicity, we just list all for now or filter by email if needed
-        return repository.findAll();
+        return repository.findByOwnerEmail(ownerEmail);
     }
 }

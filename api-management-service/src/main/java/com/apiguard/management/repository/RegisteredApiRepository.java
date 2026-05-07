@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface RegisteredApiRepository extends JpaRepository<RegisteredApi, UUID> {
     Optional<RegisteredApi> findByProxyPath(String proxyPath);
     boolean existsByProxyPath(String proxyPath);
+    java.util.List<RegisteredApi> findByOwnerEmail(String ownerEmail);
 }
