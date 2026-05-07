@@ -19,10 +19,10 @@ public class ApiKeyController {
     @PostMapping("/generate")
     public ResponseEntity<Map<String, String>> generateKey(
             @RequestParam UUID apiId,
-            @RequestParam(defaultValue = "FREE") String plan,
+            @RequestParam UUID planId,
             Authentication authentication) {
         String ownerEmail = authentication.getName();
-        String rawKey = service.createApiKey(apiId, plan, ownerEmail);
+        String rawKey = service.createApiKey(apiId, planId, ownerEmail);
         return ResponseEntity.ok(Map.of(
             "apiKey", rawKey,
             "message", "Keep this key safe! It will not be shown again."

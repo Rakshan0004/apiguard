@@ -9,4 +9,5 @@ public interface RegisteredApiRepository extends JpaRepository<RegisteredApi, UU
     Optional<RegisteredApi> findByProxyPath(String proxyPath);
     boolean existsByProxyPath(String proxyPath);
     java.util.List<RegisteredApi> findByOwnerEmail(String ownerEmail);
+    Optional<RegisteredApi> findByIdAndOwnerEmail(UUID id, String ownerEmail);
 }

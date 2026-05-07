@@ -18,8 +18,15 @@ public class Plan {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(nullable = false, unique = true)
-    private String name; // FREE, BASIC, PRO, ENTERPRISE
+    @Column(nullable = false)
+    private String name; // e.g. "Basic", "Gold", "Enterprise"
+
+    @Column(name = "owner_email", nullable = false)
+    private String ownerEmail;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "api_id", nullable = false)
+    private RegisteredApi registeredApi;
 
     @Column(name = "rate_limit_rpm", nullable = false)
     private int rateLimitRpm;

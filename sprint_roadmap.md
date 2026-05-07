@@ -45,7 +45,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
     *   Refactor existing controllers to extract `ownerEmail` from the JWT `SecurityContext`.
 *   **Deliverable**: API Owners can register, log in, receive a JWT, and use it to authenticate all Management API calls.
 
-### Sprint 5: Multi-Tenant Refactor - Custom Tiers
+### ✅ Sprint 5: Multi-Tenant Refactor - Custom Tiers [DONE]
 *   **Objective**: Pivot from global plans to user-defined custom tiers, secured behind JWT auth.
 *   **Tasks**:
     *   Refactor `Plan` entity to link it to a specific `RegisteredApi`.

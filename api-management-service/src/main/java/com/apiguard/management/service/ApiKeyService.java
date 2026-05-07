@@ -22,16 +22,16 @@ public class ApiKeyService {
     private final PlanRepository planRepository;
 
     @Transactional
-    public String createApiKey(UUID apiId, String planName, String ownerEmail) {
-        RegisteredApi api = apiRepository.findById(apiId)
-                .orElseThrow(() -> new IllegalArgumentException("API not found: " + apiId));
+    public String createApiKey(UUID apiId, UUID planId, String ownerEmail) {
+        RegisteredApi api = apiRepository.findByIdAndOwnerEmail(apiId, ownerEmail)
+                .orElseThrow(() -> new IllegalArgumentException("API not found or access denied"));
 
-        if (!api.getOwnerEmail().equals(ownerEmail)) {
-            throw new IllegalArgumentException("You do not own this API");
+        Plan plan = planRepository.findByIdAndOwnerEmail(planId, ownerEmail)
+                .orElseThrow(() -> new IllegalArgumentException("Plan not found or access denied"));
+
+        if (!plan.getRegisteredApi().getId().equals(apiId)) {
+            throw new IllegalArgumentException("This plan does not belong to the specified API");
         }
-
-        Plan plan = planRepository.findByName(planName)
-                .orElseThrow(() -> new IllegalArgumentException("Plan not found: " + planName));
 
         String rawKey = KeyGeneratorUtils.generateRawKey();
         String hash = KeyGeneratorUtils.hashKey(rawKey);
