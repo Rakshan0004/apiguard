@@ -10,7 +10,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
     runtimeOnly("org.postgresql:postgresql")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation(project(":common"))
+
 
     // JWT
     implementation("io.jsonwebtoken:jjwt-api:0.12.5")
