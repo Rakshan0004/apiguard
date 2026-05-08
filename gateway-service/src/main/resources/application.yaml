@@ -13,3 +13,12 @@ spring:
 
 server:
   port: 8080
+
+# URL of the Management Service (used for route loading + key validation)
+management:
+  service:
+    url: ${MANAGEMENT_SERVICE_URL:http://localhost:8081}
+
+logging:
+  level:
+    com.apiguard.gateway: DEBUG

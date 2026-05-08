@@ -54,7 +54,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
     *   Add ownership validation — owners can only manage plans for their own APIs.
 *   **Deliverable**: API Owners can define exactly what limits they offer to their consumers.
 
-### Sprint 6: Gateway Service - Core Routing
+### ✅ Sprint 6: Gateway Service - Core Routing [DONE]
 *   **Objective**: Implement the basic proxy functionality using Spring Cloud Gateway.
 *   **Tasks**:
     *   Set up `gateway-service` with WebFlux and Netty.
@@ -62,7 +62,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
     *   Verify request forwarding to a test backend origin.
 *   **Deliverable**: Requests to `http://gateway:8080/{proxyPath}` are forwarded correctly to the origin.
 
-### Sprint 7: API Key Authentication in Gateway
+### ✅ Sprint 7: API Key Authentication in Gateway [DONE]
 *   **Objective**: Intercept requests and validate `X-Api-Key` headers against multi-tenant configs.
 *   **Tasks**:
     *   Create a Global `ApiKeyAuthFilter` in the Gateway.

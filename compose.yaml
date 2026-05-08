@@ -61,11 +61,14 @@ services:
     environment:
       - REDIS_HOST=redis
       - RABBITMQ_HOST=rabbitmq
+      - MANAGEMENT_SERVICE_URL=http://api-management-service:8081
     depends_on:
       redis:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      api-management-service:
+        condition: service_started
 
   usage-service:
     build:
