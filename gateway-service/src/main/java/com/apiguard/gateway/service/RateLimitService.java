@@ -36,10 +36,14 @@ public class RateLimitService {
                 List.of(redisKey),
                 List.of(String.valueOf(now), String.valueOf(windowMs), String.valueOf(limit))
         ).next().map(result -> {
-            // Lua returns {allowed (0/1), remaining, resetTimeMs}
-            boolean allowed = ((Long) result.get(0)) == 1L;
-            long remaining = (Long) result.get(1);
-            long resetTimeMs = (Long) result.get(2);
+            if (result == null || result.size() < 3) {
+                log.error("Unexpected result from rate limit Lua script: {}", result);
+                return new RateLimitResult(true, 0, 0); // Fail open if script fails
+            }
+            // Use Number to be safe with Integer vs Long from Redis
+            boolean allowed = ((Number) result.get(0)).longValue() == 1L;
+            long remaining = ((Number) result.get(1)).longValue();
+            long resetTimeMs = ((Number) result.get(2)).longValue();
 
             return new RateLimitResult(allowed, remaining, resetTimeMs);
         }).doOnError(e -> log.error("Error executing rate limit Lua script: {}", e.getMessage()));
