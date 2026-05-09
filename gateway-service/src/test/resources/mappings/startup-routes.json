@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/internal/routes"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "body": "[{\"id\":\"1\", \"name\":\"Test\", \"proxyPath\":\"test\", \"targetUrl\":\"http://127.0.0.1:8089/origin\", \"active\":true, \"rateLimitRpm\":0, \"monthlyQuota\":0}]"
+  }
+}

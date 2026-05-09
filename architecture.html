@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>API Guard — Architecture</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0f1117;
+      font-family: 'Inter', sans-serif;
+      color: #e2e8f0;
+      min-height: 100vh;
+      padding: 40px 24px;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #a78bfa, #60a5fa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+    }
+    .header p {
+      color: #94a3b8;
+      font-size: 1rem;
+    }
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-bottom: 64px;
+    }
+    .node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .box {
+      padding: 16px 22px;
+      border-radius: 14px;
+      text-align: center;
+      min-width: 130px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .box .icon { font-size: 1.8rem; margin-bottom: 6px; }
+    .box .label { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; font-weight: 400; }
+    .client   { background: linear-gradient(135deg,#1e3a5f,#1e4976); }
+    .gateway  { background: linear-gradient(135deg,#3b1f6e,#5b21b6); min-width:160px; }
+    .backend  { background: linear-gradient(135deg,#7c2d12,#c2410c); }
+    .redis    { background: linear-gradient(135deg,#064e3b,#059669); }
+    .rabbit   { background: linear-gradient(135deg,#4c1d95,#7c3aed); }
+    .usage    { background: linear-gradient(135deg,#134e4a,#0d9488); }
+    .mgmt     { background: linear-gradient(135deg,#1e3a8a,#2563eb); }
+    .arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: 0 8px;
+    }
+    .arrow-line {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg,#a78bfa,#60a5fa);
+      position: relative;
+    }
+    .arrow-line::after {
+      content: '▶';
+      position: absolute;
+      right: -8px;
+      top: -8px;
+      font-size: 0.8rem;
+      color: #60a5fa;
+    }
+    .arrow-label {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      text-align: center;
+      max-width: 70px;
+    }
+    .gateway-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 8px;
+    }
+    .step {
+      background: rgba(255,255,255,0.06);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 0.72rem;
+      color: #c4b5fd;
+    }
+    .vertical-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin: 0 24px;
+    }
+    .v-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 0.65rem;
+      color: #94a3b8;
+    }
+    .v-line {
+      width: 2px;
+      height: 30px;
+      background: linear-gradient(180deg,#a78bfa,#60a5fa);
+      position: relative;
+    }
+    .v-line.down::after { content:'▼'; position:absolute; bottom:-10px; left:-5px; font-size:0.7rem; color:#60a5fa; }
+    .v-line.up::after   { content:'▲'; position:absolute; top:-10px; left:-5px; font-size:0.7rem; color:#60a5fa; }
+    .center-group {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .side-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px,1fr));
+      gap: 20px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    .card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .card h3 { font-size: 0.95rem; font-weight: 600; margin-bottom: 8px; display:flex; align-items:center; gap:8px; }
+    .card p  { font-size: 0.82rem; color: #94a3b8; line-height: 1.6; }
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 99px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .tag.gw   { background:#5b21b6; color:#e9d5ff; }
+    .tag.mgmt { background:#1d4ed8; color:#bfdbfe; }
+    .tag.us   { background:#0f766e; color:#99f6e4; }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🛡️ API Guard Platform</h1>
+    <p>How your APIs are protected, rate-limited, and tracked — end to end.</p>
+  </div>
+
+  <!-- Diagram -->
+  <div class="diagram">
+    <!-- Client -->
+    <div class="node">
+      <div class="box client">
+        <div class="icon">💻</div>
+        Your App / Client
+        <div class="label">Sends API Key</div>
+      </div>
+    </div>
+
+    <div class="arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">API Key + Request</div>
+    </div>
+
+    <!-- Gateway + side connectors -->
+    <div class="center-group">
+      <div class="side-group">
+        <!-- Redis above -->
+        <div class="node">
+          <div class="box redis">
+            <div class="icon">⚡</div>
+            Redis Cache
+            <div class="label">:6379 — Key Lookup</div>
+          </div>
+        </div>
+        <div class="v-arrow">
+          <div class="v-line down"></div>
+          <span>Cache hit / miss</span>
+        </div>
+        <!-- Gateway -->
+        <div class="node">
+          <div class="box gateway">
+            <div class="icon">🚦</div>
+            API Guard Gateway
+            <div class="label">:8080</div>
+            <div class="gateway-inner">
+              <div class="step">① Validate API Key</div>
+              <div class="step">② Check Rate Limit</div>
+              <div class="step">③ Forward Request</div>
+            </div>
+          </div>
+        </div>
+        <div class="v-arrow">
+          <div class="v-line down"></div>
+          <span>Verify Key (fallback)</span>
+        </div>
+        <!-- Management -->
+        <div class="node">
+          <div class="box mgmt">
+            <div class="icon">🗄️</div>
+            Management Service
+            <div class="label">:8081 — Keys & Plans</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arrow">
+      <div class="arrow-line"></div>
+      <div class="arrow-label">Clean Request</div>
+    </div>
+
+    <!-- Backend -->
+    <div class="node">
+      <div class="box backend">
+        <div class="icon">🖥️</div>
+        Your Backend API
+        <div class="label">Never exposed directly</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Async path -->
+  <div style="text-align:center; margin-bottom:48px; color:#94a3b8; font-size:0.82rem;">
+    📨 After forwarding → Gateway logs usage to <strong style="color:#c4b5fd">RabbitMQ</strong>
+    → <strong style="color:#5eead4">Usage Service</strong> tracks counts & enforces monthly quotas
+  </div>
+
+  <!-- Feature cards -->
+  <div class="cards">
+    <div class="card">
+      <div class="tag gw">Gateway :8080</div>
+      <h3>🚦 Smart Proxy</h3>
+      <p>Receives every request. Validates the API Key against Redis (fast) or the Management Service (fallback). Only valid keys are forwarded.</p>
+    </div>
+    <div class="card">
+      <div class="tag gw">Gateway :8080</div>
+      <h3>⏱️ Rate Limiting</h3>
+      <p>Uses a Redis Sliding Window algorithm to enforce per-minute limits defined by the API owner. Returns <code>429</code> when exceeded.</p>
+    </div>
+    <div class="card">
+      <div class="tag mgmt">Management :8081</div>
+      <h3>🔑 Key & Plan Management</h3>
+      <p>API Owners register their backends, create custom pricing tiers (e.g. Gold: 500 RPM), and generate hashed API keys for their consumers.</p>
+    </div>
+    <div class="card">
+      <div class="tag us">Usage Service :8082</div>
+      <h3>📊 Usage Analytics</h3>
+      <p>Listens to RabbitMQ events, tracks monthly usage per key, and automatically disables keys that exceed their quota. Fires webhooks at 80% and 100%.</p>
+    </div>
+  </div>
+</body>
+</html>
