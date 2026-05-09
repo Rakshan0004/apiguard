@@ -45,6 +45,10 @@ public class ApiKeyAuthFilter implements GlobalFilter, Ordered {
         String keyHash = hashKey(rawKey);
 
         return cacheService.getConfigByKeyHash(keyHash)
+                .switchIfEmpty(Mono.defer(() -> {
+                    log.warn("Request rejected — invalid API key. Hash: {}", keyHash);
+                    return reject(exchange, HttpStatus.UNAUTHORIZED, "Invalid API key").cast(ApiConfigDTO.class);
+                }))
                 .flatMap(config -> {
                     if (!config.active()) {
                         log.warn("Request rejected — API key is disabled. Hash: {}", keyHash);
@@ -57,11 +61,7 @@ public class ApiKeyAuthFilter implements GlobalFilter, Ordered {
 
                     log.debug("API key validated for API: {}", config.name());
                     return chain.filter(exchange);
-                })
-                .switchIfEmpty(Mono.defer(() -> {
-                    log.warn("Request rejected — invalid API key. Hash: {}", keyHash);
-                    return reject(exchange, HttpStatus.UNAUTHORIZED, "Invalid API key");
-                }));
+                });
     }
 
     private Mono<Void> reject(ServerWebExchange exchange, HttpStatus status, String message) {
