@@ -32,4 +32,17 @@ public class RedisConfig {
 
         return new ReactiveRedisTemplate<>(factory, context);
     }
+
+    @Bean
+    public org.springframework.data.redis.core.ReactiveStringRedisTemplate reactiveStringRedisTemplate(ReactiveRedisConnectionFactory factory) {
+        return new org.springframework.data.redis.core.ReactiveStringRedisTemplate(factory);
+    }
+
+    @Bean
+    public org.springframework.data.redis.core.script.RedisScript<java.util.List> rateLimitScript() {
+        org.springframework.data.redis.core.script.DefaultRedisScript<java.util.List> script = new org.springframework.data.redis.core.script.DefaultRedisScript<>();
+        script.setLocation(new org.springframework.core.io.ClassPathResource("scripts/rate_limit.lua"));
+        script.setResultType(java.util.List.class);
+        return script;
+    }
 }

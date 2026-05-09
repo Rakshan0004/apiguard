@@ -70,7 +70,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
     *   Handle unauthorized (401) and forbidden (403) responses.
 *   **Deliverable**: Only requests with a valid, active API key are allowed through the gateway.
 
-### Sprint 8: Dynamic Multi-Tenant Rate Limiting
+### ✅ Sprint 8: Dynamic Multi-Tenant Rate Limiting [DONE]
 *   **Objective**: Enforce user-defined custom limits at the Gateway edge.
 *   **Tasks**:
     *   Develop a Redis Lua script for high-performance sliding window rate limiting.

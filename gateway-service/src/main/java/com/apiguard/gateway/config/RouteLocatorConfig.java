@@ -45,8 +45,8 @@ public class RouteLocatorConfig {
             routesBuilder = routesBuilder.route(routeId, r -> r
                     .path("/proxy/" + proxyPath + "/**")
                     .filters(f -> f.rewritePath(
-                            "/proxy/" + proxyPath + "/(?<segment>.*)",
-                            "/${segment}"
+                            "/proxy/" + proxyPath + "(?<segment>/?.*)",
+                            "${segment}"
                     ))
                     .uri(targetUrl)
             );
