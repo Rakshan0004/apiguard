@@ -32,6 +32,8 @@ public class InternalConfigController {
                         .active(api.isActive())
                         .rateLimitRpm(0)
                         .monthlyQuota(0)
+                        .apiKeyId("")
+                        .apiId(api.getId().toString())
                         .build())
                 .toList();
         return ResponseEntity.ok(routes);
@@ -53,6 +55,8 @@ public class InternalConfigController {
                             .active(api.isActive())
                             .rateLimitRpm(plan.getRateLimitRpm())
                             .monthlyQuota(plan.getMonthlyQuota())
+                            .apiKeyId(key.getId().toString())
+                            .apiId(api.getId().toString())
                             .build();
                 })
                 .map(ResponseEntity::ok)

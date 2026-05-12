@@ -10,5 +10,7 @@ public record ApiConfigDTO(
     String proxyPath,
     boolean active,
     int rateLimitRpm,
-    long monthlyQuota
+    long monthlyQuota,
+    String apiKeyId,
+    String apiId
 ) {}

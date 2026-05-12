@@ -11,6 +11,9 @@ spring:
     show-sql: true
   flyway:
     enabled: true
+    table: management_flyway_history
+    baseline-on-migrate: true
+    baseline-version: 4
     locations: classpath:db/migration
 
 server:
