@@ -22,3 +22,11 @@ spring:
 
 server:
   port: 8082
+
+# Quota Enforcement Configuration
+quota:
+  enforcement:
+    enabled: ${QUOTA_ENFORCEMENT_ENABLED:true}
+    management-service-url: ${MANAGEMENT_SERVICE_URL:http://localhost:8081}
+    timeout-ms: ${QUOTA_ENFORCEMENT_TIMEOUT:5000}
+    connection-pool-size: ${QUOTA_ENFORCEMENT_POOL_SIZE:10}

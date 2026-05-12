@@ -12,5 +12,6 @@ public record ApiConfigDTO(
     int rateLimitRpm,
     long monthlyQuota,
     String apiKeyId,
-    String apiId
+    String apiId,
+    String disabledReason
 ) {}

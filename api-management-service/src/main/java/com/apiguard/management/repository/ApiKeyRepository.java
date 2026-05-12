@@ -9,4 +9,5 @@ import java.util.List;
 public interface ApiKeyRepository extends JpaRepository<ApiKey, UUID> {
     Optional<ApiKey> findByKeyHash(String keyHash);
     List<ApiKey> findByRegisteredApiId(UUID registeredApiId);
+    List<ApiKey> findByDisabledReason(String disabledReason);
 }

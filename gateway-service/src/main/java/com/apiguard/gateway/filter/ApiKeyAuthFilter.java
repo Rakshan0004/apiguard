@@ -51,8 +51,12 @@ public class ApiKeyAuthFilter implements GlobalFilter, Ordered {
                 }))
                 .flatMap(config -> {
                     if (!config.active()) {
-                        log.warn("Request rejected — API key is disabled. Hash: {}", keyHash);
-                        return reject(exchange, HttpStatus.FORBIDDEN, "API key is disabled");
+                        String reason = config.disabledReason() != null 
+                            ? config.disabledReason() 
+                            : "Unknown";
+                        log.warn("Request rejected — API key is disabled. Hash: {}, Reason: {}", keyHash, reason);
+                        return reject(exchange, HttpStatus.FORBIDDEN, 
+                            "API key is disabled. Reason: " + reason);
                     }
 
                     // Attach config to exchange so downstream filters can use it
