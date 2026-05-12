@@ -83,7 +83,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
 ## Phase 3: Usage Tracking & Async Processing
 
 ### Sprint 9: RabbitMQ Event Publishing
-*   **Objective**: Capture usage data asynchronously without slowing down requests.
+*   **Objective**: Capture usage data asynchronously without slowing down requests. [DONE]
 *   **Tasks**:
     *   Implement `UsageLoggingFilter` in the Gateway (post-forwarding).
     *   Create a reactive `UsageEventPublisher`.
@@ -91,7 +91,7 @@ This roadmap breaks down the construction of the API Guard platform into 15 logi
 *   **Deliverable**: Every successful proxy request triggers a `UsageEvent` message in RabbitMQ.
 
 ### Sprint 10: Usage Service - Consumption & Metrics
-*   **Objective**: Process events and maintain monthly usage counters.
+*   **Objective**: Process events and maintain monthly usage counters. [DONE]
 *   **Tasks**:
     *   Initialize `usage-service` with JPA and PostgreSQL.
     *   Implement the RabbitMQ `UsageEventConsumer`.
