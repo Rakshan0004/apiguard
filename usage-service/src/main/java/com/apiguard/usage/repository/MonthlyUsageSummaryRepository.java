@@ -13,6 +13,13 @@ public interface MonthlyUsageSummaryRepository extends JpaRepository<MonthlyUsag
     
     Optional<MonthlyUsageSummary> findByApiKeyIdAndYearMonth(String apiKeyId, String yearMonth);
 
+    @Query(value = """
+        SELECT * FROM monthly_usage_summaries
+        WHERE api_key_id = :apiKeyId AND year_month = :yearMonth
+        FOR UPDATE
+        """, nativeQuery = true)
+    Optional<MonthlyUsageSummary> findByApiKeyIdAndYearMonthForUpdate(String apiKeyId, String yearMonth);
+
     @Modifying
     @Query(value = """
         INSERT INTO monthly_usage_summaries (api_key_id, year_month, total_requests, successful_requests)

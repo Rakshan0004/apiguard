@@ -43,6 +43,12 @@ public class ApiKey {
     @Column(name = "disabled_reason")
     private String disabledReason;
 
+    @Column(name = "webhook_url", length = 2048)
+    private String webhookUrl;
+
+    @Column(name = "webhook_secret", length = 64)
+    private String webhookSecret;
+
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;

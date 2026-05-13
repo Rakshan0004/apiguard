@@ -34,6 +34,7 @@ public class InternalConfigController {
                         .monthlyQuota(0)
                         .apiKeyId("")
                         .apiId(api.getId().toString())
+                        .disabledReason(null)
                         .build())
                 .toList();
         return ResponseEntity.ok(routes);
@@ -43,7 +44,6 @@ public class InternalConfigController {
     @GetMapping("/configs/{keyHash}")
     public ResponseEntity<ApiConfigDTO> getApiConfig(@PathVariable String keyHash) {
         return repository.findByKeyHash(keyHash)
-                .filter(ApiKey::isActive)
                 .map(key -> {
                     var api = key.getRegisteredApi();
                     var plan = key.getPlan();
@@ -52,11 +52,12 @@ public class InternalConfigController {
                             .name(api.getName())
                             .targetUrl(api.getTargetUrl())
                             .proxyPath(api.getProxyPath())
-                            .active(api.isActive())
+                            .active(key.isActive())
                             .rateLimitRpm(plan.getRateLimitRpm())
                             .monthlyQuota(plan.getMonthlyQuota())
                             .apiKeyId(key.getId().toString())
                             .apiId(api.getId().toString())
+                            .disabledReason(key.getDisabledReason())
                             .build();
                 })
                 .map(ResponseEntity::ok)

@@ -25,7 +25,7 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**", "/actuator/health").permitAll()
+                .requestMatchers("/api/v1/auth/**", "/actuator/**").permitAll()
                 .requestMatchers("/internal/**").permitAll() // Secure this in Sprint 15
                 .anyRequest().authenticated()
             )
