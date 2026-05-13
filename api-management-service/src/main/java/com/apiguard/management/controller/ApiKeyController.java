@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -27,5 +28,12 @@ public class ApiKeyController {
             "apiKey", rawKey,
             "message", "Keep this key safe! It will not be shown again."
         ));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Map<String, Object>>> listKeys(Authentication authentication) {
+        String ownerEmail = authentication.getName();
+        List<Map<String, Object>> keys = service.getKeysForOwner(ownerEmail);
+        return ResponseEntity.ok(keys);
     }
 }

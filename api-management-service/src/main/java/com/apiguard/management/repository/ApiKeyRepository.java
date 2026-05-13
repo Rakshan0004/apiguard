@@ -10,4 +10,5 @@ public interface ApiKeyRepository extends JpaRepository<ApiKey, UUID> {
     Optional<ApiKey> findByKeyHash(String keyHash);
     List<ApiKey> findByRegisteredApiId(UUID registeredApiId);
     List<ApiKey> findByDisabledReason(String disabledReason);
+    List<ApiKey> findByRegisteredApi_OwnerEmail(String ownerEmail);
 }

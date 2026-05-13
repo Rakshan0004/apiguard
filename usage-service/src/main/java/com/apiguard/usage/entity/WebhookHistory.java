@@ -44,7 +44,7 @@ public class WebhookHistory {
     @Column(name = "quota_limit", nullable = false)
     private long quotaLimit;
 
-    @Column(name = "usage_percentage", nullable = false, precision = 5, scale = 2)
+    @Column(name = "usage_percentage", nullable = false)
     private double usagePercentage;
 
     @Column(name = "webhook_url", nullable = false, length = 2048)

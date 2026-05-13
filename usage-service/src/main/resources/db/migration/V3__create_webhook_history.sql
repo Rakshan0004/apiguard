@@ -7,7 +7,7 @@ CREATE TABLE webhook_history (
     year_month VARCHAR(7) NOT NULL,
     usage_count BIGINT NOT NULL,
     quota_limit BIGINT NOT NULL,
-    usage_percentage DECIMAL(5,2) NOT NULL,
+    usage_percentage DOUBLE PRECISION NOT NULL,
     webhook_url VARCHAR(2048) NOT NULL,
     sent_at TIMESTAMP NOT NULL,
     http_status_code INT,

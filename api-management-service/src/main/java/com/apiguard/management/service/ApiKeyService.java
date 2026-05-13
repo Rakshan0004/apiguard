@@ -181,4 +181,27 @@ public class ApiKeyService {
         redisTemplate.delete(cacheKey);
         log.debug("Cache invalidated for key hash: {}", keyHash);
     }
+
+    /**
+     * Get all API keys for a specific owner.
+     *
+     * @param ownerEmail The email of the owner
+     * @return List of key information maps
+     */
+    @Transactional(readOnly = true)
+    public List<java.util.Map<String, Object>> getKeysForOwner(String ownerEmail) {
+        List<ApiKey> keys = repository.findByRegisteredApi_OwnerEmail(ownerEmail);
+        return keys.stream()
+                .map(key -> {
+                    java.util.Map<String, Object> keyInfo = new java.util.HashMap<>();
+                    keyInfo.put("id", key.getId().toString());
+                    keyInfo.put("keyPrefix", key.getKeyPrefix());
+                    keyInfo.put("apiName", key.getRegisteredApi().getName());
+                    keyInfo.put("planName", key.getPlan().getName());
+                    keyInfo.put("active", key.isActive());
+                    keyInfo.put("createdAt", key.getCreatedAt().toString());
+                    return keyInfo;
+                })
+                .toList();
+    }
 }
