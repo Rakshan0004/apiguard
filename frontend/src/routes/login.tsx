@@ -1,92 +1,144 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate, useSearch } from '@tanstack/react-router'
 import { type AuthResponse, request } from '~/lib/api'
 import { getToken, setToken } from '~/lib/auth'
 
 export const Route = createFileRoute('/login')({
-  component: LoginRoute,
+  validateSearch: (s: Record<string, unknown>) => ({
+    registered: s.registered === 'true',
+  }),
+  component: LoginPage,
 })
 
-function LoginRoute() {
+function LoginPage() {
   const navigate = useNavigate()
+  const search = useSearch({ from: '/login' })
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [isRegisterMode, setIsRegisterMode] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const [showPass, setShowPass] = useState(false)
 
   useEffect(() => {
-    if (getToken()) {
-      void navigate({ to: '/dashboard' })
-    }
+    if (getToken()) void navigate({ to: '/dashboard' })
   }, [navigate])
 
-  async function submitAuth(e: FormEvent) {
+  async function handleLogin(e: FormEvent) {
     e.preventDefault()
     setLoading(true)
-    setMessage(null)
     setError(null)
     try {
-      const endpoint = isRegisterMode ? '/api/v1/auth/register' : '/api/v1/auth/login'
-      const data = await request<AuthResponse>(endpoint, {
+      const data = await request<AuthResponse>('/api/v1/auth/login', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       })
-
       setToken(data.token)
       localStorage.setItem('apiguard_email', email)
-      setPassword('')
-      setMessage(isRegisterMode ? 'Registered successfully.' : 'Logged in successfully.')
       void navigate({ to: '/dashboard' })
-    } catch (e) {
-      setError((e as Error).message)
+    } catch (err) {
+      setError((err as Error).message)
     } finally {
       setLoading(false)
     }
   }
 
   return (
-    <main className="auth-wrap panel">
-      <h1>{isRegisterMode ? 'Create APIGuard account' : 'Welcome back to APIGuard'}</h1>
-      <p className="subtitle">Manage your APIs, plans, and keys in one console.</p>
-
-      <form className="grid" onSubmit={submitAuth}>
-        <div>
-          <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            required
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="owner@company.com"
-          />
+    <div className="auth-page">
+      <div className="auth-card">
+        {/* Logo */}
+        <div className="auth-logo">
+          <div className="auth-logo-icon">A</div>
+          <span className="auth-logo-name">API<span>Guard</span></span>
         </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            minLength={6}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="••••••••"
-          />
+
+        {/* Registered Banner */}
+        {search.registered && (
+          <div style={{
+            background: 'rgba(52,211,153,0.1)',
+            border: '1px solid rgba(52,211,153,0.25)',
+            borderRadius: 8,
+            padding: '10px 14px',
+            marginBottom: 20,
+            fontSize: '0.87rem',
+            color: 'var(--green)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+          }}>
+            <span style={{ fontWeight: 700 }}>✓</span>
+            Account created! Sign in to continue.
+          </div>
+        )}
+
+        <h1 className="auth-title">Welcome back</h1>
+        <p className="auth-subtitle">Sign in to your APIGuard console</p>
+
+        <form onSubmit={handleLogin} className="form-grid" style={{ marginTop: 24 }}>
+          <div className="form-group">
+            <label htmlFor="login-email">Email address</label>
+            <input
+              id="login-email"
+              type="email"
+              value={email}
+              required
+              autoComplete="email"
+              onChange={e => setEmail(e.target.value)}
+              placeholder="you@company.com"
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="login-password">Password</label>
+            <div style={{ position: 'relative' }}>
+              <input
+                id="login-password"
+                type={showPass ? 'text' : 'password'}
+                value={password}
+                required
+                minLength={6}
+                autoComplete="current-password"
+                onChange={e => setPassword(e.target.value)}
+                placeholder="••••••••"
+                style={{ paddingRight: 44 }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPass(v => !v)}
+                style={{
+                  position: 'absolute', right: 12, top: '50%',
+                  transform: 'translateY(-50%)',
+                  background: 'transparent', border: 'none',
+                  color: 'var(--text-3)', cursor: 'pointer', fontSize: '0.85rem', padding: 0,
+                }}
+              >
+                {showPass ? '🙈' : '👁'}
+              </button>
+            </div>
+          </div>
+
+          {error && (
+            <div style={{
+              background: 'var(--red-bg)',
+              border: '1px solid rgba(248,113,113,0.25)',
+              borderRadius: 8,
+              padding: '10px 14px',
+              fontSize: '0.85rem',
+              color: 'var(--red)',
+            }}>
+              {error}
+            </div>
+          )}
+
+          <button className="btn btn-primary btn-full btn-lg" type="submit" disabled={loading}>
+            {loading ? <><span className="spinner" /> Signing in…</> : 'Sign in'}
+          </button>
+        </form>
+
+        <div className="auth-footer" style={{ marginTop: 24 }}>
+          Don't have an account?{' '}
+          <Link to="/register">Create one free</Link>
         </div>
-        <button disabled={loading} type="submit">
-          {loading ? 'Please wait...' : isRegisterMode ? 'Register' : 'Login'}
-        </button>
-        <button className="ghost" type="button" onClick={() => setIsRegisterMode((v) => !v)}>
-          {isRegisterMode ? 'Have an account? Login' : 'Need an account? Register'}
-        </button>
-      </form>
-
-      <p className="subtitle" style={{ marginTop: 12 }}>
-        After login, go to <Link to="/dashboard">Dashboard</Link>
-      </p>
-
-      {message && <div className="status ok">{message}</div>}
-      {error && <div className="status error">{error}</div>}
-    </main>
+      </div>
+    </div>
   )
 }

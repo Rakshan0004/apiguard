@@ -17,7 +17,7 @@ spring:
     enabled: true
     table: management_flyway_history
     baseline-on-migrate: true
-    baseline-version: 4
+    baseline-version: 0
     locations: classpath:db/migration
 
 server:

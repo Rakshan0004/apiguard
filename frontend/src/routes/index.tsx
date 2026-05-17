@@ -8,11 +8,9 @@ export const Route = createFileRoute('/')({
 
 function IndexRoute() {
   const navigate = useNavigate()
-
   useEffect(() => {
     const token = getToken()
-    void navigate({ to: token ? '/dashboard' : '/login' })
+    void navigate({ to: token ? '/dashboard/' : '/login' })
   }, [navigate])
-
   return null
 }
