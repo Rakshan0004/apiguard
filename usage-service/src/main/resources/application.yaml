@@ -35,3 +35,9 @@ quota:
     management-service-url: ${MANAGEMENT_SERVICE_URL:http://localhost:8081}
     timeout-ms: ${QUOTA_ENFORCEMENT_TIMEOUT:5000}
     connection-pool-size: ${QUOTA_ENFORCEMENT_POOL_SIZE:10}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
