@@ -1,6 +1,5 @@
 package com.apiguard.usage.service;
 
-import com.apiguard.common.dto.WebhookConfig;
 import com.apiguard.common.dto.WebhookNotification;
 import com.apiguard.common.dto.WebhookPayload;
 import com.apiguard.usage.client.ManagementServiceClient;
@@ -11,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**

@@ -96,9 +96,9 @@ public class WebhookValidationPropertiesTest {
             return true;
         }
         try {
-            URL url = new URL(webhookUrl);
+            URL url = new java.net.URI(webhookUrl).toURL();
             return "https".equalsIgnoreCase(url.getProtocol());
-        } catch (MalformedURLException e) {
+        } catch (java.net.URISyntaxException | MalformedURLException e) {
             return false;
         }
     }
@@ -111,9 +111,9 @@ public class WebhookValidationPropertiesTest {
             return true;
         }
         try {
-            new URL(webhookUrl);
+            new java.net.URI(webhookUrl).toURL();
             return true;
-        } catch (MalformedURLException e) {
+        } catch (java.net.URISyntaxException | MalformedURLException e) {
             return false;
         }
     }

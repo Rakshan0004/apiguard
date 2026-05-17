@@ -39,10 +39,11 @@ public class RedisConfig {
     }
 
     @Bean
-    public org.springframework.data.redis.core.script.RedisScript<java.util.List> rateLimitScript() {
-        org.springframework.data.redis.core.script.DefaultRedisScript<java.util.List> script = new org.springframework.data.redis.core.script.DefaultRedisScript<>();
+    @SuppressWarnings("unchecked")
+    public org.springframework.data.redis.core.script.RedisScript<java.util.List<?>> rateLimitScript() {
+        org.springframework.data.redis.core.script.DefaultRedisScript<java.util.List<?>> script = new org.springframework.data.redis.core.script.DefaultRedisScript<>();
         script.setLocation(new org.springframework.core.io.ClassPathResource("scripts/rate_limit.lua"));
-        script.setResultType(java.util.List.class);
+        script.setResultType((Class<java.util.List<?>>) (Class<?>) java.util.List.class);
         return script;
     }
 }

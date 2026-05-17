@@ -1,16 +1,12 @@
 package com.apiguard.management.controller;
 
-import com.apiguard.management.dto.ApiKeyDetailsDTO;
 import com.apiguard.management.dto.DisableKeyRequest;
-import com.apiguard.management.dto.DisableKeyResponse;
-import com.apiguard.management.dto.EnableKeyResponse;
 import com.apiguard.management.entity.ApiKey;
 import com.apiguard.management.entity.Plan;
 import com.apiguard.management.entity.RegisteredApi;
 import com.apiguard.management.repository.ApiKeyRepository;
 import com.apiguard.management.repository.PlanRepository;
 import com.apiguard.management.repository.RegisteredApiRepository;
-import com.apiguard.management.service.ApiKeyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Testcontainers
 class InternalKeyManagementControllerTest {
 
+    @SuppressWarnings("resource")
     @Container
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine")
             .withDatabaseName("testdb")

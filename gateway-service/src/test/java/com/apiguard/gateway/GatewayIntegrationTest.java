@@ -4,7 +4,7 @@ import com.apiguard.common.dto.ApiConfigDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -21,7 +21,7 @@ public class GatewayIntegrationTest {
     @Autowired
     private WebTestClient webClient;
 
-    @MockBean
+    @MockitoBean
     private ReactiveRedisTemplate<String, ApiConfigDTO> redisTemplate;
 
     @Test

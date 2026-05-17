@@ -27,7 +27,7 @@ public class RouteLocatorConfig {
      */
     @Bean
     public RouteLocator dynamicRouteLocator(RouteLocatorBuilder builder, WebClient managementWebClient) {
-        List<Map> routes = fetchRoutes(managementWebClient);
+        List<Map<String, Object>> routes = fetchRoutes(managementWebClient);
 
         RouteLocatorBuilder.Builder routesBuilder = builder.routes();
 
@@ -35,7 +35,7 @@ public class RouteLocatorConfig {
             log.warn("No routes fetched from Management Service. Gateway has no routes configured.");
         }
 
-        for (Map route : routes) {
+        for (Map<String, Object> route : routes) {
             String proxyPath = (String) route.get("proxyPath");
             String targetUrl = (String) route.get("targetUrl");
             String routeId = "route-" + proxyPath;
@@ -55,13 +55,13 @@ public class RouteLocatorConfig {
         return routesBuilder.build();
     }
 
-    @SuppressWarnings("unchecked")
-    private List<Map> fetchRoutes(WebClient managementWebClient) {
+    private List<Map<String, Object>> fetchRoutes(WebClient managementWebClient) {
         try {
-            List<Map> result = managementWebClient.get()
+            org.springframework.core.ParameterizedTypeReference<Map<String, Object>> typeRef = new org.springframework.core.ParameterizedTypeReference<>() {};
+            List<Map<String, Object>> result = managementWebClient.get()
                     .uri("/internal/routes")
                     .retrieve()
-                    .bodyToFlux(Map.class)
+                    .bodyToFlux(typeRef)
                     .collectList()
                     .block();
             return result != null ? result : List.of();

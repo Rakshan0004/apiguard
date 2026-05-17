@@ -43,7 +43,6 @@ public class WebhookDeliveryService {
 
     private static final int MAX_RETRIES = 3;
     private static final long[] RETRY_DELAYS_MS = {1000, 2000, 4000}; // 1s, 2s, 4s
-    private static final int REQUEST_TIMEOUT_MS = 10000; // 10 seconds
 
     /**
      * Deliver webhook notification synchronously.

@@ -2,7 +2,6 @@ package com.apiguard.gateway.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -16,7 +15,7 @@ import java.util.List;
 public class RateLimitService {
 
     private final org.springframework.data.redis.core.ReactiveStringRedisTemplate redisTemplate;
-    private final RedisScript<List> rateLimitScript;
+    private final RedisScript<List<?>> rateLimitScript;
 
     public record RateLimitResult(boolean allowed, long remaining, long resetTimeMs) {}
 

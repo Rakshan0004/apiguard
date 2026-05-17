@@ -32,8 +32,8 @@ public class WebhookUrlValidator {
         // Parse URL to validate format
         URL url;
         try {
-            url = new URL(webhookUrl);
-        } catch (MalformedURLException e) {
+            url = new java.net.URI(webhookUrl).toURL();
+        } catch (java.net.URISyntaxException | MalformedURLException e) {
             throw new IllegalArgumentException("Invalid webhook URL format: " + e.getMessage());
         }
 
@@ -54,9 +54,9 @@ public class WebhookUrlValidator {
             return true;
         }
         try {
-            URL url = new URL(webhookUrl);
+            URL url = new java.net.URI(webhookUrl).toURL();
             return HTTPS_PROTOCOL.equalsIgnoreCase(url.getProtocol());
-        } catch (MalformedURLException e) {
+        } catch (java.net.URISyntaxException | MalformedURLException e) {
             return false;
         }
     }
@@ -72,9 +72,9 @@ public class WebhookUrlValidator {
             return true;
         }
         try {
-            new URL(webhookUrl);
+            new java.net.URI(webhookUrl).toURL();
             return true;
-        } catch (MalformedURLException e) {
+        } catch (java.net.URISyntaxException | MalformedURLException e) {
             return false;
         }
     }

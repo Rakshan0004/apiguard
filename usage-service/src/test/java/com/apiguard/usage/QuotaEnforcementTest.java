@@ -41,6 +41,9 @@ class QuotaEnforcementTest {
     @Mock
     private ManagementServiceClient managementServiceClient;
 
+    @Mock
+    private com.apiguard.usage.service.WebhookTriggerService webhookTriggerService;
+
     private QuotaEnforcementService quotaEnforcementService;
     private UsageService usageService;
     private QuotaEnforcementConfig config;
@@ -58,7 +61,7 @@ class QuotaEnforcementTest {
         config = new QuotaEnforcementConfig();
         config.setEnabled(true);
 
-        quotaEnforcementService = new QuotaEnforcementServiceImpl(managementServiceClient);
+        quotaEnforcementService = new QuotaEnforcementServiceImpl(managementServiceClient, webhookTriggerService);
         usageService = new UsageService(logRepository, summaryRepository, quotaEnforcementService, config);
     }
 

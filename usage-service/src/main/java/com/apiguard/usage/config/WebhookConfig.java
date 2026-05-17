@@ -30,8 +30,8 @@ public class WebhookConfig {
     @Bean(name = "webhookRestTemplate")
     public RestTemplate webhookRestTemplate(RestTemplateBuilder builder) {
         return builder
-            .setConnectTimeout(Duration.ofMillis(WEBHOOK_TIMEOUT_MS))
-            .setReadTimeout(Duration.ofMillis(WEBHOOK_TIMEOUT_MS))
+            .connectTimeout(Duration.ofMillis(WEBHOOK_TIMEOUT_MS))
+            .readTimeout(Duration.ofMillis(WEBHOOK_TIMEOUT_MS))
             .build();
     }
 

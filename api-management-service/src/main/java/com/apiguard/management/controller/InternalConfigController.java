@@ -1,7 +1,7 @@
 package com.apiguard.management.controller;
 
 import com.apiguard.common.dto.ApiConfigDTO;
-import com.apiguard.management.entity.ApiKey;
+
 import com.apiguard.management.repository.ApiKeyRepository;
 import com.apiguard.management.repository.RegisteredApiRepository;
 import lombok.RequiredArgsConstructor;
