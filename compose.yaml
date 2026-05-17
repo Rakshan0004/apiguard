@@ -47,8 +47,11 @@ services:
     environment:
       - DB_HOST=postgres
       - DB_PORT=5432
+      - REDIS_HOST=redis
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -q --spider http://localhost:8081/actuator/health || exit 1"]
